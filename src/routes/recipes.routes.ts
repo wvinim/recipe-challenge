@@ -1,18 +1,27 @@
 import { Router } from 'express';
-import GiphyRepository from '../repositories/GiphyRepository';
-import RecipePuppyRepository from '../repositories/RecipePuppyRepository';
+import RecipeController from '../controller/RecipesController';
 
 const recipesRouter = Router();
 
 /** Recipes endpoint */
 recipesRouter.get('/', async (request, response) => {
-  const giphyHelper = new GiphyRepository();
-  const gif = await giphyHelper.search('well done');
+  const recipeController = new RecipeController();
+  let params: string[] = [];
 
-  const recipePuppyHelper = new RecipePuppyRepository();
-  const recipes = await recipePuppyHelper.search(['onions', 'butter']);
+  if ('i' in request.query) {
+    params = request.query.i.toString().split(',');
+  }
 
-  return response.json(recipes);
+  if (params.length > 3) {
+    response.status(400).json({
+      error:
+        '400 BAD REQUEST: Number of ingredients cannot be greater than three.',
+    });
+  }
+
+  const recipes = await recipeController.search(params);
+
+  response.json(recipes);
 });
 
 export default recipesRouter;
