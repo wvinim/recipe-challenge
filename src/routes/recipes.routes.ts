@@ -29,16 +29,16 @@ recipesRouter.get('/', async (request, response) => {
   }
 
   /** Call main search controller */
-  const recipes = await recipeController.search(params);
+  const recipeList = await recipeController.search(params);
 
   /** Service unavailable */
-  if (!recipes) {
+  if (!recipeList) {
     response.status(400).json({
       error: 'Service unavailable',
     });
   }
 
-  await response.json(recipes);
+  response.json(recipeList);
 });
 
 export default recipesRouter;

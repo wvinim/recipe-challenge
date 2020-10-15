@@ -1,11 +1,12 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import Recipe from '../model/Recipe';
+import RecipeList from '../model/RecipeList';
 import GiphyRepository from '../repositories/GiphyRepository';
 import RecipePuppyRepository from '../repositories/RecipePuppyRepository';
 
 class RecipesController {
-  async search(keywords: string[]): Promise<Recipe[] | null> {
+  async search(keywords: string[]): Promise<RecipeList | null> {
     const giphyHelper = new GiphyRepository();
     const recipePuppyHelper = new RecipePuppyRepository();
 
@@ -37,7 +38,12 @@ class RecipesController {
       recipes.push(recipe);
     }
 
-    return recipes;
+    const recipeList = {
+      keywords,
+      recipes,
+    };
+
+    return recipeList;
   }
 }
 
