@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import axios from 'axios';
 import dotenv from 'dotenv';
 import RecipePuppy from '../model/RecipePuppy';
@@ -9,18 +8,20 @@ class RecipePuppyRepository {
   public async search(ingredients: string[]): Promise<RecipePuppy[]> {
     const url = `${process.env.RECIPES_URL}/api/`;
 
-    return axios
-      .get(url, {
-        params: {
-          i: ingredients.join(', '),
-        },
-      })
-      .then(response => {
-        return response.data.results;
-      })
-      .catch(error => {
-        console.log(`Ops... An error occurs. ${error}`);
-      });
+    return new Promise((resolve, reject) => {
+      axios
+        .get(url, {
+          params: {
+            i: ingredients.join(', '),
+          },
+        })
+        .then(response => {
+          resolve(response.data.results);
+        })
+        .catch(err => {
+          reject(`Recipe Puppy service unavailable: ${err.message}`);
+        });
+    });
   }
 }
 

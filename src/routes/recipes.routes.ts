@@ -16,29 +16,24 @@ recipesRouter.get('/', async (request, response) => {
   /** Check params */
   if (params.length < 1) {
     response.status(400).json({
-      error: '400 BAD REQUEST: Please, verify your ingredients.',
+      error: 'Please, verify your ingredients.',
     });
   }
 
   /** Check max params */
   if (params.length > 3) {
     response.status(400).json({
-      error:
-        '400 BAD REQUEST: Number of ingredients cannot be greater than three.',
+      error: 'Number of ingredients cannot be greater than three.',
     });
   }
 
-  /** Call main search controller */
-  const recipeList = await recipeController.search(params);
-
-  /** Service unavailable */
-  if (!recipeList) {
-    response.status(400).json({
-      error: 'Service unavailable',
-    });
+  try {
+    /** Call main search controller */
+    const recipeList = await recipeController.search(params);
+    response.json(recipeList);
+  } catch (error) {
+    response.status(400).json(error);
   }
-
-  response.json(recipeList);
 });
 
 export default recipesRouter;

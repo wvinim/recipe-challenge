@@ -6,27 +6,18 @@ import GiphyRepository from '../repositories/GiphyRepository';
 import RecipePuppyRepository from '../repositories/RecipePuppyRepository';
 
 class RecipesController {
-  async search(keywords: string[]): Promise<RecipeList | null> {
+  async search(keywords: string[]): Promise<RecipeList> {
     const giphyHelper = new GiphyRepository();
     const recipePuppyHelper = new RecipePuppyRepository();
 
     /** Get recipespuppy data */
     const recipesPuppy = await recipePuppyHelper.search(keywords);
 
-    /** Service unavailable */
-    if (!recipesPuppy) {
-      return null;
-    }
     const recipes: Recipe[] = [];
 
     for (const element of recipesPuppy) {
       /** Get giphy url */
       const gif = await giphyHelper.search(element.title);
-
-      /** Service unavailable */
-      if (!gif) {
-        return null;
-      }
 
       /** Make recipe object */
       const recipe = new Recipe(
@@ -38,10 +29,7 @@ class RecipesController {
       recipes.push(recipe);
     }
 
-    const recipeList = {
-      keywords,
-      recipes,
-    };
+    const recipeList = new RecipeList(keywords, recipes);
 
     return recipeList;
   }
