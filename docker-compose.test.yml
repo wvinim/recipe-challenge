@@ -1,0 +1,8 @@
+version: '2'
+services:
+  app:
+    build: .
+    command: yarn run test
+    ports:
+      - '3030:3030'
+    tty: true

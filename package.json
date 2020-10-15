@@ -1,9 +1,9 @@
 {
   "name": "recipe-challenge",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "repository": "https://github.com/wvinim/recipe-challenge.git",
-  "author": "Vinicius Moraes <wvinim@msn.com>",
+  "author": "Wellington Vinicius Moraes <wvinim@msn.com>",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
