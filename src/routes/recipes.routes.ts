@@ -12,6 +12,12 @@ recipesRouter.get('/', async (request, response) => {
     params = request.query.i.toString().split(',');
   }
 
+  if (params.length < 1) {
+    response.status(400).json({
+      error: '400 BAD REQUEST: Please, verify your ingredients.',
+    });
+  }
+
   if (params.length > 3) {
     response.status(400).json({
       error:
